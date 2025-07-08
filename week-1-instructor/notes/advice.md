@@ -6,3 +6,9 @@
 
 > "The bad news is you are falling through space without a parachute. The good news is there is no ground" - CTR
 
+## How Many Tests Should You Write?
+
+Write enough tests that you and your team has confidence that the software works as expected.
+
+
+

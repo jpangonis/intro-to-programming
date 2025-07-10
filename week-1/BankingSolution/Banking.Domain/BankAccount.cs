@@ -11,6 +11,10 @@ namespace Banking.Domain
         public void Deposit(decimal amountToDeposit)
         {
             //if (_isGoldAccount) { _currentBalance += 110}
+            if (amountToDeposit <= 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
             
             _currentBalance += amountToDeposit;
         }

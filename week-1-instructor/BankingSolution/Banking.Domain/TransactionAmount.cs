@@ -11,6 +11,7 @@ public readonly struct TransactionAmount
         {
             throw new InvalidTransactionAmountException();
         }
+      
         _amount = amount;
     }
 

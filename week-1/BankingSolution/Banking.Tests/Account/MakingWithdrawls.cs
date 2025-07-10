@@ -1,10 +1,13 @@
-﻿using Banking.Domain;
+﻿
+using Banking.Domain;
 
 namespace Banking.Tests.Account;
-public class MakingWithdrawls
+
+public class MakingWithdrawals
 {
+
     [Fact]
-    public void MakingAWithdrawlDecreasesBalance()
+    public void MakingAWithdrawalDecreasesBalance()
     {
         var account = new BankAccount();
         var openingBalance = account.GetBalance();
@@ -15,4 +18,3 @@ public class MakingWithdrawls
         Assert.Equal(openingBalance - amountToWithdraw, account.GetBalance());
     }
 }
-

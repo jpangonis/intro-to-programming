@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
 using Banking.Domain;
 
-namespace Banking.Tests.Account
+namespace Banking.Tests.Account;
+
+public class MakingDeposits
 {
-    public class MakingDeposits
+    [Theory]
+    [InlineData(100)]
+    [InlineData(223.89)]
+
+    public void MakingADepositIncreasesTheBalance(decimal amountToDeposit)
     {
-        [Theory]
-        [InlineData(100)]
-        [InlineData(223.89)]
-        [InlineData(0)]
-        [InlineData(-1002.38)]
-        public void MakingADepositIncreasesTheBalance(decimal amountToDeposit)
-        {
-            var account = new BankAccount();
-            var openingBalance = account.GetBalance();
+        // Given
+        var account = new BankAccount();
+        var openingBalance = account.GetBalance();
 
-            //When
-            account.Deposit(amountToDeposit);
 
-            //Then 
-            Assert.Equal(amountToDeposit + openingBalance, account.GetBalance());
-        }
+        // When
+        account.Deposit(amountToDeposit);
+
+        // Then
+        Assert.Equal(amountToDeposit + openingBalance, account.GetBalance());
     }
 }

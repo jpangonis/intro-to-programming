@@ -1,12 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Banking.Domain;
 
-namespace Banking.Tests.Transactions
+namespace Banking.Tests.Transactions;
+public class TransactionAmountTests
 {
-    internal class TransactionAmountTest
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+
+    public void InvalidValues(decimal val)
     {
+        Assert.Throws<InvalidTransactionAmountException>(
+            () => new TransactionAmount(val));
+
+
+    }
+
+    [Theory]
+    [InlineData(.01)]
+    [InlineData(1000)]
+
+    public void ValidValues(decimal val)
+    {
+        var r = new TransactionAmount(val);
+
+        Assert.Equal<TransactionAmount>(val, r);
     }
 }

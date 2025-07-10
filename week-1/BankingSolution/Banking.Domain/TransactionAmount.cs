@@ -1,12 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace Banking.Domain
+namespace Banking.Domain;
+public readonly struct TransactionAmount
 {
-    internal class TransactionAmount
+    private readonly decimal _amount;
+
+    public TransactionAmount(decimal amount)
     {
+        if (amount <= 0)
+        {
+            throw new InvalidTransactionAmountException();
+        }
+        _amount = amount;
+    }
+
+    public static implicit operator decimal(TransactionAmount tx)
+    {
+        return tx._amount;
+    }
+
+    public static implicit operator TransactionAmount(decimal val)
+    {
+        return new TransactionAmount(val);
     }
 }
+
+public class InvalidTransactionAmountException : ArgumentOutOfRangeException;

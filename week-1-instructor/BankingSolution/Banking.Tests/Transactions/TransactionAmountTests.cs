@@ -8,6 +8,7 @@ public class TransactionAmountTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
+ 
 
     public void InvalidValues(decimal val)
     {
@@ -20,6 +21,7 @@ public class TransactionAmountTests
     [Theory]
     [InlineData(.01)]
     [InlineData(1000)]
+
 
     public void ValidValues(decimal val)
     {

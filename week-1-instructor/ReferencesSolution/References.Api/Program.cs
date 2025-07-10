@@ -8,10 +8,12 @@ var connectionString = builder.Configuration.GetConnectionString("links")
 
 
 // Add services to the container. 
+
+
 builder.Services.AddMarten(config =>
 {
     config.Connection(connectionString);
-}).UseLightweightSessions();
+}).UseLightweightSessions(); // there will be an IDocumentSession available to use in your controllers.
 
 
 builder.Services.AddControllers();

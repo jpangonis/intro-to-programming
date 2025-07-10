@@ -5,10 +5,13 @@ namespace Banking.Domain
 {
     public class BankAccount
     {
+        //private bool _isGoldAccount = false;
         private decimal _currentBalance = 5000;
         
         public void Deposit(decimal amountToDeposit)
         {
+            //if (_isGoldAccount) { _currentBalance += 110}
+            
             _currentBalance += amountToDeposit;
         }
 
@@ -21,5 +24,10 @@ namespace Banking.Domain
         {
             _currentBalance -= amountToWithdraw;
         }
+
+        //public decimal GetGoldStatus()
+        //{
+        //    return _isGoldAccount;
+        //}
     }
 }

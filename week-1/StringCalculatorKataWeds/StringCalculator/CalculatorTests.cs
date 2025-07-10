@@ -3,12 +3,11 @@
 namespace StringCalculator;
 public class CalculatorTests
 {
+    private Calculator _calculator = new Calculator();
     [Fact]
     public void EmptyStringReturnsZero()
     {
-        var calculator = new Calculator();
-
-        var result = calculator.Add("");
+        var result = _calculator.Add("");
 
         Assert.Equal(0, result);
     }
@@ -19,8 +18,7 @@ public class CalculatorTests
     [InlineData("25", 25)]
     public void CanAddSingleNumber(string value, int expected)
     {
-        var calculator = new Calculator();
-        var result = calculator.Add(value);
+        var result = _calculator.Add(value);
         Assert.Equal(expected, result);
     }
 
@@ -30,8 +28,7 @@ public class CalculatorTests
     [InlineData("25,25", 50)]
     public void CanAddTwoNumbers(string value, int expected)
     {
-        var calculator = new Calculator();
-        var result = calculator.Add(value);
+        var result = _calculator.Add(value);
         Assert.Equal(expected, result);
     }
 
@@ -41,8 +38,7 @@ public class CalculatorTests
     [InlineData("4,7,10", 21)]
     public void CanAddManyNumber(string value, int expected)
     {
-        var calculator = new Calculator();
-        var result = calculator.Add(value);
+        var result = _calculator.Add(value);
         Assert.Equal(expected, result);
     }
 
@@ -51,17 +47,17 @@ public class CalculatorTests
     [InlineData("1\n2,3", 6)]
     public void CanAddMixNumber(string value, int expected)
     {
-        var calculator = new Calculator();
-        var result = calculator.Add(value);
+        var result = _calculator.Add(value);
         Assert.Equal(expected, result);
     }
 
     [Theory]
-    [InlineData("#\n1#2#3", 6)]
+    [InlineData("//;\n1;2", 3)]
+    [InlineData("//;\n1;4",5)]
+    [InlineData("//*\n1*2",3)]
     public void CanAddAnyDelimiterNumber(string value, int expected)
     {
-        var calculator = new Calculator();
-        var result = calculator.Add(value);
+        var result = _calculator.Add(value);
         Assert.Equal(expected, result);
     }
 }

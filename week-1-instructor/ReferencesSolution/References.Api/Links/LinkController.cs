@@ -9,7 +9,7 @@ public class LinkController(IDocumentSession session) : ControllerBase
 
     // some code here that will get called when a GET /links is sent to this server.
 
-    [HttpGet("/links")]
+    [HttpGet("/links")]3:
     public async Task<ActionResult> GetAllLinksAsync(CancellationToken token)
     {
 

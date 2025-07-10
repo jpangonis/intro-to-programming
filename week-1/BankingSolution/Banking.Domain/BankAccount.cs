@@ -3,15 +3,15 @@
 
 namespace Banking.Domain;
 
-public class BankAccount
+public class BankAccount(ICalculateBonusesForBankAccounts _bonusCalculator)
 {
 
 
     private decimal _currentBalance = 7000;
-    public virtual void Deposit(TransactionAmount amountToDeposit)
+    public void Deposit(TransactionAmount amountToDeposit)
     {
-        //_currentBalance = _currentBalance + amountToDeposit;
-        _currentBalance += amountToDeposit;
+        decimal bonusToApply = _bonusCalculator.CalculateBonusForDeposit(_currentBalance, amountToDeposit);
+        _currentBalance += amountToDeposit + bonusToApply;
 
     }
 
@@ -25,4 +25,6 @@ public class BankAccount
     {
         _currentBalance -= amountToWithdraw;
     }
+
+
 }

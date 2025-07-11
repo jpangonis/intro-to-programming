@@ -1,5 +1,6 @@
 
 using Marten;
+using References.Api.External;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,12 +9,14 @@ var connectionString = builder.Configuration.GetConnectionString("links")
 
 
 // Add services to the container. 
+
+
 builder.Services.AddMarten(config =>
 {
     config.Connection(connectionString);
-}).UseLightweightSessions();
+}).UseLightweightSessions(); // there will be an IDocumentSession available to use in your controllers.
 
-
+//builder.Services.AddScoped<IValidateLinksWithSecurity, >
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

@@ -1,5 +1,9 @@
 ﻿
 using Alba;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
+using References.Api.External;
 
 namespace References.Tests.Links;
 
@@ -11,8 +15,18 @@ public class GettingAllLinks
     {
 
         // GET /links
-
-        var host = await AlbaHost.For<Program>();
+        var dummyLinkValidator = Substitute.For<IValidateLinksWithSecurity>();
+        dummyLinkValidator
+            .ValidateLinkAsync(Arg.Any<LinkValidationRequest>())
+            .Returns(Task.FromResult(new LinkValidationResponse(LinkStatus.Good)));
+       
+        var host = await AlbaHost.For<Program>(config =>
+        {
+            config.ConfigureTestServices(services =>
+            {
+                services.AddScoped<IValidateLinksWithSecurity>(_ => dummyLinkValidator);
+            });
+        });
 
         await host.Scenario(api =>
         {

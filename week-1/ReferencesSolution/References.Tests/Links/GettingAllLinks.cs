@@ -1,5 +1,8 @@
 ﻿
 using Alba;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.AspNetCore.TestHost;
+using References.Api.External;
 
 namespace References.Tests.Links;
 
@@ -11,8 +14,16 @@ public class GettingAllLinks
     {
 
         // GET /links
-
-        var host = await AlbaHost.For<Program>();
+        var dummyLinkValidator = Substitute.For<IValidateLinksWithSecurity>();
+        dummyLinkValidator
+            .ValidateLinkAsync(Arg.Any<LinkValidationRequest>())
+            .Returns(Task.FromResult(new LinkValidationResponse(LinkStatus.Good)));
+        var host = await AlbaHost.For<Program>(config =>
+        {
+            config.ConfigureTestServices(services{
+                ServicesModelBinder.AddScoped<IValidateLinksWithSecurity>(_ => dummyLinkValidator);
+            });
+        });
 
         await host.Scenario(api =>
         {

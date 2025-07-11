@@ -7,7 +7,5 @@ public interface IValidateLinksWithSecurity
 
 public record LinkValidationRequest(string Href);
 
-public enum LinkStatus { Good, Blocked, Pending};
-
-public record LinkValidationResponse(LinkStatus status);
-
+public enum LinkStatus { Good, Blocked, Pending };
+public record LinkValidationResponse(LinkStatus Status);

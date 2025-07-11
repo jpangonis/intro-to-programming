@@ -58,7 +58,7 @@ public class LinkController(IDocumentSession session, IValidateLinksWithSecurity
 
 public record LinkCreateRequest(string Href, string Description);
 
-public class LinkEntity
+public record LinkEntity
 {
     public Guid Id { get; set; }
     public string Href { get; set; } = string.Empty;

@@ -44,9 +44,40 @@ public class LinkController(IDocumentSession session, IValidateLinksWithSecurity
         {
             return BadRequest("That link is blocked by IT Security"); // 400
         }
-        throw new NotImplementedException();
+        if (validationResult.Status == LinkStatus.Pending)
+        {
+            var pendingEntity = new PendingLinkEntity
+            {
+                Id = Guid.NewGuid(),
+                CheckedOn = DateTimeOffset.UtcNow,
+                Description = request.Description,
+                Href = request.Href,
+                Status = validationResult.Status
+            };
+
+            session.Store(pendingEntity);
+            await session.SaveChangesAsync();
+
+            return Redirect("/pending-links/" + pendingEntity.Id);
+        }
+        return NoContent(); // better than throwing an exception for now.
     }
 
+    [HttpGet("/pending-links/{id:guid}")]
+    public async Task<ActionResult> GetLinkById(Guid id)
+    {
+        var item = await session.Query<PendingLinkEntity>().SingleOrDefaultAsync(p => p.Id == id);
+
+        if(item is not null)
+        {
+            return Ok(item);
+        } else
+        {
+            return NotFound();
+        }
+
+
+    }
 
 
 }
@@ -63,4 +94,13 @@ public record LinkEntity
     public Guid Id { get; set; }
     public string Href { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
+}
+
+public record PendingLinkEntity
+{
+    public Guid Id { get; set; }
+    public string Href { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public DateTimeOffset CheckedOn { get; set; } 
+    public LinkStatus Status { get; set; }
 }

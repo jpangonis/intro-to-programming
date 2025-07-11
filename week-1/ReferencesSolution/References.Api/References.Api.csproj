@@ -10,6 +10,7 @@
     <PackageReference Include="Alba" Version="8.2.1" />
     <PackageReference Include="Marten.AspNetCore" Version="8.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.6" />
+    <PackageReference Include="NSubstitute" Version="5.3.0" />
   </ItemGroup>
 
 </Project>

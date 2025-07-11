@@ -1,4 +1,5 @@
-﻿using Alba;
+﻿
+using Alba;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
@@ -27,25 +28,31 @@ public class AddingAPendingLink
         var response = await host.Scenario(api =>
         {
             api.Post.Json(linkToAdd).ToUrl("/links");
-            api.StatusCodeShouldBe(400);
+            api.StatusCodeShouldBe(302);
         });
 
         Assert.NotNull(response);
 
+        // follow the location header to see if it is actually there.
+
         var location = response.Context.Response.Headers.Location.Single();
+
         Assert.NotNull(location);
 
-        var GetResponse = await host.Scenario(api =>
+
+        var getResponse = await host.Scenario(api =>
         {
-            api.Get.Url(location);
+            api.Get.Url(location); // /pending-links/839839893893
             api.StatusCodeShouldBeOk();
         });
 
-        Assert.NotNull(GetResponse);
+        Assert.NotNull(getResponse);
 
-        var GetResponseBody = GetResponse.ReadAsJson<PendingLinkEntity>();
-        Assert.NotNull(GetResponseBody);
+        var getResponseBody = getResponse.ReadAsJson<PendingLinkEntity>();
+        Assert.NotNull(getResponseBody);
 
-        Assert.Equal(GetResponseBody.Status, LinkStatus.Pending);
+        // etc. etc.
+        Assert.Equal(LinkStatus.Pending, getResponseBody.Status);
+
     }
 }

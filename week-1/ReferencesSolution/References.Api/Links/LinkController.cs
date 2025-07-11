@@ -1,5 +1,4 @@
 ﻿
-using System;
 using Marten;
 using Microsoft.AspNetCore.Mvc;
 using References.Api.External;
@@ -45,9 +44,7 @@ public class LinkController(IDocumentSession session, IValidateLinksWithSecurity
         {
             return BadRequest("That link is blocked by IT Security"); // 400
         }
-        throw new NotImplementedException();
-
-        if(validationResult.Status == LinkStatus.Pending)
+        if (validationResult.Status == LinkStatus.Pending)
         {
             var pendingEntity = new PendingLinkEntity
             {
@@ -63,12 +60,14 @@ public class LinkController(IDocumentSession session, IValidateLinksWithSecurity
 
             return Redirect("/pending-links/" + pendingEntity.Id);
         }
-        return NoContent();
+        return NoContent(); // better than throwing an exception for now.
     }
+
     [HttpGet("/pending-links/{id:guid}")]
     public async Task<ActionResult> GetLinkById(Guid id)
     {
         var item = await session.Query<PendingLinkEntity>().SingleOrDefaultAsync(p => p.Id == id);
+
         if (item is not null)
         {
             return Ok(item);
@@ -77,6 +76,8 @@ public class LinkController(IDocumentSession session, IValidateLinksWithSecurity
         {
             return NotFound();
         }
+
+
     }
 
 

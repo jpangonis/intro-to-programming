@@ -1,63 +1,78 @@
 ﻿
-
+using NSubstitute;
 namespace StringCalculator;
+
 public class CalculatorTests
 {
-    private Calculator _calculator = new Calculator();
+    private Calculator _calculator = new(Substitute.For<ILogger>(), Substitute.For<IWebService>());
+
     [Fact]
     public void EmptyStringReturnsZero()
     {
+
+
         var result = _calculator.Add("");
 
         Assert.Equal(0, result);
     }
 
     [Theory]
-    [InlineData("3",3)]
-    [InlineData("101", 101)]
-    [InlineData("25", 25)]
-    public void CanAddSingleNumber(string value, int expected)
+    [InlineData("1", 1)]
+    [InlineData("2", 2)]
+    [InlineData("420", 420)]
+    public void CanAddSingleInteger(string numbers, int expected)
     {
-        var result = _calculator.Add(value);
+
+        var result = _calculator.Add(numbers);
         Assert.Equal(expected, result);
     }
 
     [Theory]
-    [InlineData("3,2", 5)]
-    [InlineData("11,4", 15)]
-    [InlineData("25,25", 50)]
-    public void CanAddTwoNumbers(string value, int expected)
+    [InlineData("1,2", 3)]
+    [InlineData("2,2", 4)]
+    [InlineData("12,10", 22)]
+
+    public void CanAddTwoNumbers(string numbers, int expected)
     {
-        var result = _calculator.Add(value);
+
+        var result = _calculator.Add(numbers);
         Assert.Equal(expected, result);
     }
 
     [Theory]
-    [InlineData("3,4,5", 12)]
-    [InlineData("1,2,3,4,5,6,7,8,9", 45)]
-    [InlineData("4,7,10", 21)]
-    public void CanAddManyNumber(string value, int expected)
+    [InlineData("1,2,3", 6)]
+
+
+    public void ArbitraryLength(string numbers, int expected)
     {
-        var result = _calculator.Add(value);
+
+        var result = _calculator.Add(numbers);
         Assert.Equal(expected, result);
     }
 
     [Theory]
     [InlineData("1\n2", 3)]
-    [InlineData("1\n2,3", 6)]
-    public void CanAddMixNumber(string value, int expected)
+    [InlineData("1,2\n3", 6)]
+
+    public void NewLineDelimeters(string numbers, int expected)
     {
-        var result = _calculator.Add(value);
+
+        var result = _calculator.Add(numbers);
         Assert.Equal(expected, result);
     }
 
     [Theory]
     [InlineData("//;\n1;2", 3)]
-    [InlineData("//;\n1;4",5)]
-    [InlineData("//*\n1*2",3)]
-    public void CanAddAnyDelimiterNumber(string value, int expected)
+    [InlineData("//;\n1;4", 5)]
+    [InlineData("//*\n1*2", 3)]
+
+    public void CustomDelimeters(string numbers, int expected)
     {
-        var result = _calculator.Add(value);
+
+        var result = _calculator.Add(numbers);
         Assert.Equal(expected, result);
     }
+
+
+
 }

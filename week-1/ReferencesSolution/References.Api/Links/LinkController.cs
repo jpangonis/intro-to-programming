@@ -12,6 +12,8 @@ public class LinkController(IDocumentSession session) : ControllerBase
     [HttpGet("/links")]
     public async Task<ActionResult> GetAllLinksAsync(CancellationToken token)
     {
+
+
         var response = await session.Query<LinkEntity>().ToListAsync();
         return Ok(response);
     }

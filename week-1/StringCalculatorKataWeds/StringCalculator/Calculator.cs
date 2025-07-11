@@ -1,43 +1,47 @@
 ﻿
-using System;
-using System.Linq;
-using System.Numerics;
-using NSubstitute.ReturnsExtensions;
 
-public class Calculator
+
+public class Calculator(ILogger _logger, IWebService _webService)
 {
     public int Add(string numbers)
     {
-        //if ((numbers.IndexOf(',') != -1) || (numbers.IndexOf("\n") != -1) || (numbers.IndexOf("#") != -1))
-        //{
+        List<char> delimeters = [',', '\n'];
 
-        //    char[] delimiters = [',', '\n', '#'];
-        //    int result = 0;
-        //    string[] number = numbers.Split(delimiters);
-        //    foreach (string num in number)
-        //        if (num != "")
-        //            result += int.Parse(num);
-        //    return result;
-        //}
-        //else
-        //{
-        //    return numbers == "" ? 0 : int.Parse(numbers);
-        //}
-
-        List<char> delimiters = [ ',', '\n' ];
         if (numbers == "")
         {
             return 0;
         }
-        if (numbers.StartsWith("//"))
+
+        if (HasCustomDelimeters(numbers))
         {
-            var delimiter = numbers[2];
-            delimiters.Add(delimiter);
+
+            var delimeter = numbers[2];
+            delimeters.Add(delimeter);
             numbers = numbers[4..];
+
         }
-        
-        return numbers.Split([.. delimiters]) //string
-                .Select(n => int.Parse(n)) //Select -> map
-                .Sum(); //add
+
+        var response = numbers.Split([.. delimeters]) //string[]
+             .Select(int.Parse) // int[]
+             .Sum();
+
+        // right here, log this sucker out.
+
+        try
+        {
+            _logger.Write(response.ToString());
+        }
+        catch (Exception)
+        {
+
+            _webService.NotifyOfLoggingFailure(response.ToString());
+        }
+        return response;
+
+    }
+
+    private bool HasCustomDelimeters(string numbers)
+    {
+        return numbers.StartsWith("//");
     }
 }

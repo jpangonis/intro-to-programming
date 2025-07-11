@@ -1,4 +1,5 @@
-﻿using Alba;
+﻿
+using Alba;
 
 namespace References.Tests.Links;
 
@@ -10,6 +11,7 @@ public class GettingAllLinks
     {
 
         // GET /links
+
         var host = await AlbaHost.For<Program>();
 
         await host.Scenario(api =>

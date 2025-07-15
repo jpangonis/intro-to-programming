@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavBar } from './components/nav-bar';
 import { RouterOutlet } from '@angular/router';
+import { NavBar } from './components/nav-bar';
 
 @Component({
   selector: 'app-root',
+
   template: `
     <app-nav-bar />
 

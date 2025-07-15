@@ -6,6 +6,7 @@ export const demos_routes: Routes = [
   {
     path: '',
     component: Demo,
+
     children: [
       {
         path: 'counter',

@@ -1,11 +1,5 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  signal,
-  computed,
-  inject,
-} from '@angular/core';
-import { CounterStore } from '../services/counter-store';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { CounterStore } from '../../shared/counter-store';
 
 @Component({
   selector: 'app-demos-counter',

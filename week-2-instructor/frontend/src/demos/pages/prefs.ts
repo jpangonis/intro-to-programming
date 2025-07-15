@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CounterStore } from '../services/counter-store';
+import { CounterStore } from '../../shared/counter-store';
 
 @Component({
   selector: 'app-counter-prefs',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
+  providers: [],
   template: `
     <p>You are counting by:</p>
     <div class="join">

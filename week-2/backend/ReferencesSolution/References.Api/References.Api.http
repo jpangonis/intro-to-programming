@@ -1,0 +1,17 @@
+@References.Api_HostAddress = http://localhost:1337
+
+
+
+GET {{References.Api_HostAddress}}/links
+Accept: application/json
+
+### 
+
+POST {{References.Api_HostAddress}}/links 
+Accept: application/json 
+Content-Type: application/json 
+
+{
+    "href": "https://www.geico.com",
+    "description": "Best dang videos Main Site"
+}

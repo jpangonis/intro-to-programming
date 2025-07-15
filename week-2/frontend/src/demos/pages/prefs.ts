@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CounterStore } from '../services/counter-store';
+import { CounterStore } from '../../shared/counter-store';
 
 @Component({
   selector: 'app-counter-prefs',

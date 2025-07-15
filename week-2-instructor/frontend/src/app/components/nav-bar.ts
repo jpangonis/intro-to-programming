@@ -1,5 +1,11 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  inject,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CounterStore } from '../../shared/counter-store';
 
 @Component({
   selector: 'app-nav-bar',
@@ -48,7 +54,12 @@ import { RouterLink } from '@angular/router';
         </ul>
       </div>
       <div class="navbar-end">
-        <a class="btn">Button</a>
+        <span class="badge badge-primary px-2"
+          >Current Counter {{ store.current() }}</span
+        >
+        <span class="badge badge-primary px-2"
+          >Counting By {{ store.by() }}</span
+        >
       </div>
     </div>
   `,
@@ -61,4 +72,6 @@ export class NavBar {
     { name: 'Links', href: '/links' },
     { name: 'About', href: '/about' },
   ]);
+
+  store = inject(CounterStore);
 }

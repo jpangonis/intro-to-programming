@@ -19,7 +19,7 @@ type SignalState = {
 
 export const CounterStore = signalStore(
   withState<SignalState>({
-    by: 3,
+    by: 1,
     current: 0,
   }),
   withProps(() => {

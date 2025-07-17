@@ -1,55 +1,44 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LinksStore } from '../services/links-store';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-links-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [RouterLink],
   template: `
-    <div
-      class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100"
-    >
-      <table class="table">
-        <!-- head -->
-        <thead>
-          <tr>
-            <th></th>
-            <th>
-              <button
-                (click)="store.setSortingBy('href')"
-                [disabled]="store.sortingBy() === 'href'"
-                class="btn btn-sm btn-primary"
-              >
-                URL
-              </button>
-            </th>
-            <th>
-              <button
-                (click)="store.setSortingBy('description')"
-                [disabled]="store.sortingBy() === 'description'"
-                class="btn btn-sm btn-primary"
-              >
-                Descriptions
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- row 1 -->
-
-          @for (link of store.sortedEntities(); track link.id) {
-            <tr>
-              <th>{{ link.id }}</th>
-              <td>{{ link.href }}</td>
-              <td>{{ link.description }}</td>
-            </tr>
-          } @empty {
-            <p>No links available.</p>
-          }
-          <!-- row 2 -->
-        </tbody>
-      </table>
-    </div>
+    <ul class="list bg-base-100 rounded-box shadow-md">
+      <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">
+        Links Shared With You
+      </li>
+      @for (link of store.sortedEntities(); track link.id) {
+        <li class="list-row">
+          <div>
+            <p class="text-xl font-bold">{{ link.description }}</p>
+            <p class="text-sm opacity-70">{{ link.href }}</p>
+          </div>
+          <div>
+            <a
+              class="btn btn-sm btn-primary"
+              [href]="link.href"
+              target="_blank"
+            >
+              Open Link
+            </a>
+            <a
+              class="btn btn-sm btn-primary ml-4"
+              [routerLink]="['/links', link.id]"
+            >
+              See Details
+            </a>
+          </div>
+        </li>
+      } @empty {
+        <li class="p-4 text-center text-sm opacity-60">
+          No links shared with you yet.
+        </li>
+      }
+    </ul>
   `,
   styles: ``,
 })

@@ -1,6 +1,11 @@
-@ProxyCheck.Api_HostAddress = http://localhost:5174
+@ProxyCheck.Api_HostAddress = http://localhost:32768
 
-GET {{ProxyCheck.Api_HostAddress}}/weatherforecast/
+POST {{ProxyCheck.Api_HostAddress}}/check-link/
 Accept: application/json
+Content-Type: application/json
+
+{
+    "href": "http://geico.com"
+}
 
 ###

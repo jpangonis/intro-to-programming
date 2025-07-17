@@ -1,6 +1,25 @@
-import { http, delay, HttpResponse } from 'msw';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { http, delay, HttpResponse, passthrough } from 'msw';
 
 export const LinksHandlers = [
+  // http.get('http://localhost:1337/links', async () => {
+  //   await delay(5000);
+  //   return HttpResponse.json([]);
+  //   passthrough();
+  // }),
+  http.post(
+    'http://api.realsever-but-not-really.com/links',
+    async ({ request }) => {
+      const body = (await request.json()) as any;
+      await delay(3000); // 100ms - 200ms
+      const response = {
+        id: crypto.randomUUID(),
+        ...body,
+      };
+      return HttpResponse.json(response);
+    },
+  ),
+
   http.get('http://api.realsever-but-not-really.com/links', async () => {
     await delay(); // 100ms - 200ms
     //return HttpResponse.json([]);

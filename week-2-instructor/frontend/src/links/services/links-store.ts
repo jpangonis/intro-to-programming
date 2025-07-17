@@ -7,10 +7,22 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { setEntities, withEntities } from '@ngrx/signals/entities';
+import { addEntity, setEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { exhaustMap, pipe, tap } from 'rxjs';
+import { exhaustMap, mergeMap, pipe, tap } from 'rxjs';
+import {
+  clearError,
+  setError,
+  withErrorDisplay,
+} from './error-display-feature';
 import { LinkApiItem, LinksApiService } from './links-api';
+
+import { tapResponse } from '@ngrx/operators';
+import {
+  setFulfilled,
+  setLoading,
+  withResourceState,
+} from '../../shared/resource-state-feature';
 
 export type ApiLinkCreateItem = Omit<LinkApiItem, 'id'>;
 
@@ -19,7 +31,9 @@ type LinkSortState = {
   sortingBy: SortOptions;
 };
 export const LinksStore = signalStore(
+  withErrorDisplay(),
   withEntities<LinkApiItem>(),
+  withResourceState(),
   withState<LinkSortState>({
     sortingBy: 'href',
   }),
@@ -40,15 +54,32 @@ export const LinksStore = signalStore(
   withMethods((store) => {
     const service = inject(LinksApiService);
     return {
-      addLink: (link: ApiLinkCreateItem) => console.log('Adding link:', link),
+      clearError: () => patchState(store, clearError()),
+      addLink: rxMethod<ApiLinkCreateItem>(
+        pipe(
+          mergeMap((link) =>
+            service.addLink(link).pipe(
+              tapResponse(
+                (newLink) => patchState(store, addEntity(newLink)),
+                () => patchState(store, setError('Failed adding ' + link.href)),
+              ),
+            ),
+          ),
+        ),
+      ),
       setSortingBy: (sortingBy: SortOptions) =>
         patchState(store, { sortingBy }),
       _load: rxMethod<void>(
         pipe(
+          tap(() => patchState(store, setLoading())),
           exhaustMap(() =>
             service
               .getLinks()
-              .pipe(tap((links) => patchState(store, setEntities(links)))),
+              .pipe(
+                tap((links) =>
+                  patchState(store, setEntities(links), setFulfilled),
+                ),
+              ),
           ),
         ),
       ),

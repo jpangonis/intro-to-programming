@@ -1,6 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { http, delay, HttpResponse } from 'msw';
 
 export const LinksHandlers = [
+  http.post(
+    'http://api.realsever-but-not-really.com/links',
+    async ({ request }) => {
+      const body = (await request.json()) as any;
+      await delay(3000); // 100ms - 200ms
+      const response = {
+        id: crypto.randomUUID(),
+        ...body,
+      };
+      return HttpResponse.json(response);
+    },
+  ),
+
   http.get('http://api.realsever-but-not-really.com/links', async () => {
     await delay(); // 100ms - 200ms
     //return HttpResponse.json([]);

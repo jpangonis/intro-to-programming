@@ -10,6 +10,9 @@ import { RouterLink, RouterOutlet } from '@angular/router';
     <div class="flex flex-row gap-4">
       <a routerLink="counter" class="btn btn-primary">Counter</a>
       <a routerLink="prefs" class="btn btn-primary">Settings</a>
+      <a routerLink="component-communication" class="btn btn-primary"
+        >Component Communication</a
+      >
     </div>
     <div class="p-12">
       <router-outlet />

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: proxy-api
+spec:
+  selector:
+    matchLabels:
+      app: proxy-api
+      namespace: links
+  template:
+    metadata:
+      labels:
+        app: proxy-api
+    spec:
+      containers:
+      - name: proxy-api
+        image: juliapangonis/proxy-api:v1.0.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 8080

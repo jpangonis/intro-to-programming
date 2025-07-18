@@ -9,7 +9,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.MapPost("/check-link", (LinkValidationRequest request) =>
 {
-    if(request.Href.ToLower().Contains("geico"))
+    if(request.Href.ToLower().Contains("geico") || request.Href.ToLower().Contains("allstate"))
     {
         return Results.Ok(new LinkValidationResponse(LinkStatus.Blocked));
     } else

@@ -1,0 +1,6 @@
+POST http://localhost:8090/check-link
+Content-Type: application/json
+
+{
+  "href": "https://allstate.com"
+}
